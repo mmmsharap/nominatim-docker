@@ -40,10 +40,19 @@ COPY local.php /app/src/build/settings/local.php
 COPY nominatim.conf /etc/apache2/sites-enabled/000-default.conf
 
 # Load initial data
-ARG PBF_DATA=http://download.geofabrik.de/europe/monaco-latest.osm.pbf
-RUN curl -L -f $PBF_DATA --create-dirs -o /app/src/data.osm.pbf
+# ARG PBF_DATA=http://download.geofabrik.de/europe/monaco-latest.osm.pbf
+# RUN curl -L -f $PBF_DATA --create-dirs -o /app/src/data.osm.pbf
 RUN curl http://www.nominatim.org/data/country_grid.sql.gz > /app/src/data/country_osm_grid.sql.gz
 COPY setup.php /app/src/build/utils/setup.php
+
+RUN ln -s /opt/nominatim-3.0/latest.osm.pbf /app/src/data.osm.pbf && \
+    cd /var/lib/postgresql/9.5/ ; rm  -rf main ; ln -s /opt/nominatim-3.0/main && \
+    useradd -m -p password1234 nominatim && \
+    chown -R nominatim:nominatim /app/src && \
+    chmod u+x /app/src/build/utils/setup.php /app/src/build/utils/update.php
+
+
+
 EXPOSE 5432
 EXPOSE 8080
 
