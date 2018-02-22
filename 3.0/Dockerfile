@@ -43,9 +43,10 @@ COPY nominatim.conf /etc/apache2/sites-enabled/000-default.conf
 ARG PBF_DATA=http://download.geofabrik.de/europe/monaco-latest.osm.pbf
 RUN curl -L -f $PBF_DATA --create-dirs -o /app/src/data.osm.pbf
 RUN curl http://www.nominatim.org/data/country_grid.sql.gz > /app/src/data/country_osm_grid.sql.gz
-COPY ./setup.php /app/src/build/utils/setup.php
+COPY setup.php /app/src/build/utils/setup.php
 EXPOSE 5432
 EXPOSE 8080
 
 COPY start.sh /app/start.sh
+COPY pg_initial.sh /app/pg_initial.sh
 CMD /app/start.sh
