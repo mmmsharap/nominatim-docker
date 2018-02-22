@@ -1,0 +1,23 @@
+[Unit]
+Description=Nominatim container
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/docker run \
+        --restart=always \
+        -p 8080:8080 \
+        --name nominatim-3 \
+        -v /var/log/apache2:/var/log/apache2/ \
+        -v /opt/nominatim-3.0:/opt/nominatim-3.0 \
+        nominatim-3-urfo:latest
+ExecStop=/usr/bin/docker rm -f nominatim-3
+
+# sudo -u nominatim bash /app/pg_initial.sh
+# sudo -u nominatim ./src/build/utils/update.php --init-updates
+# sudo -u nominatim ./src/build/utils/update.php --import-osmosis-all
+
+[Install]
+WantedBy=default.target
+
