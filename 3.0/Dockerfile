@@ -14,6 +14,7 @@ RUN apt-get -y update -qq && \
     postgresql-server-dev-9.5 postgresql-9.5-postgis-2.2 postgresql-contrib-9.5 \
     apache2 php php-pgsql libapache2-mod-php php-pear php-db \
     php-intl git curl sudo \
+    pgbouncer vim \
     python-pip libboost-python-dev \
     osmosis && \
     apt-get clean && \
@@ -58,4 +59,6 @@ EXPOSE 8080
 
 COPY start.sh /app/start.sh
 COPY pg_initial.sh /app/pg_initial.sh
+COPY pgbouncer.ini /etc/pgbouncer/pgbouncer.ini
+COPT userlist.txt /etc/pgbouncer/userlist.txt
 CMD /app/start.sh
