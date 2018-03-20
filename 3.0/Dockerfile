@@ -60,5 +60,5 @@ EXPOSE 8080
 COPY start.sh /app/start.sh
 COPY pg_initial.sh /app/pg_initial.sh
 COPY pgbouncer.ini /etc/pgbouncer/pgbouncer.ini
-COPT userlist.txt /etc/pgbouncer/userlist.txt
+COPY userlist.txt /etc/pgbouncer/userlist.txt
 CMD /app/start.sh
